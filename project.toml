@@ -1,0 +1,17 @@
+name = 'outpost-sdk-nucleo-u5a5'
+license = 'Apache-2.0'
+license_file = ['LICENSE.txt']
+dts = 'dts/nucleo_u5a5.dts'
+crossfile = 'arm-none-eabi-gcc.ini'
+version = 'v0.1.0'
+
+[kernel]
+scm.git.uri = 'https://github.com/outpost-os/sentry-kernel.git'
+scm.git.revision = 'main'
+config = 'configs/sentry/sentry.config'
+
+[runtime]
+scm.git.uri = 'https://github.com/outpost-os/shield.git'
+scm.git.revision = 'main'
+config = 'configs/shield/shield.config'
+
