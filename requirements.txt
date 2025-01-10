@@ -1,4 +1,4 @@
-outpost-barbican>=v0.4.0
+outpost-barbican>=v0.4.1
 dunamai>=1.16
 svd2json>=0.1.6
 dts-utils>=0.2.0
