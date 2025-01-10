@@ -6,8 +6,15 @@ from conan.tools.gnu import PkgConfig
 
 
 class outpostSdkRecipe(ConanFile):
-    name = "outpost-sdk-u5a5zj"
+    name = "outpost-sdk-nucleo-u5a5zj"
     settings = "os", "arch"
+    user = "outpost-os"
+    description = """This is the pre-build Outpost SDK for nucleo-u5a5zj board
+                  A complete set of tools, headers and pre-built arm-none-eabi binaries
+                  for the official STM32 nucleo board"""
+    topics = ("outpost","sdk")
+    homepage = "https://github.com/outpost-os"
+    url = "https://github.com/outpost-os/outpost-sdk-nucleo-u5a5zj"
 
     def set_version(self):
         git = Git(self)
