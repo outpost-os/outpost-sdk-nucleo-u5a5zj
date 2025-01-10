@@ -1,0 +1,63 @@
+name: Outpost SDK build
+
+on:
+  schedule:
+     - cron:  '0 22 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-latest
+    container:
+      image: mesonbuild/ubuntu-rolling
+    steps:
+      - name: install prerequisites pkg
+        uses: outpost-os/action-install-pkg@v1
+        with:
+          packages: 'pandoc,dtc|device-tree-compiler,libssh2-1|libssh2,curl,lld,srecord'
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: nightly
+          targets: thumbv8m.main-none-eabi
+          components: clippy,rustfmt
+      - name: Add supplementary rust tooling
+        run:
+          cargo install cargo-index
+      - name: Setup C toolchain
+        uses: outpost-os/action-setup-compiler@v1
+        with:
+          compiler: gcc
+          triple: arm-none-eabi
+          ref: 13.2.Rel1
+          workspace: '/__w/_temp/'
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: deploy local deps
+        run: |
+          pip install -r requirements.txt
+      - name: build SDK
+        run: |
+          git config --global user.name 'John Theci'
+          git config --global user.email 'john@the.ci'
+          mkdir -p $HOME/.local/share/meson/cross
+          cp *.ini $HOME/.local/share/meson/cross/
+          barbican download
+          barbican setup
+          ninja -C output/build
+      - name: delivers SDK
+        run: |
+          set -xe
+          mv output/staging outpost-os-sdk-nucleo-u5a5zj-latest
+          tar -czvf outpost-os-sdk-nucleo-u5a5zj-latest.tar.gz outpost-os-sdk-nucleo-u5a5zj-latest
+
