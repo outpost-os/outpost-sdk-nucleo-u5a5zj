@@ -50,6 +50,13 @@ ninja -C outpost/build
 
 ## Using the SDK
 
+### Using pre-built SDK package
+
+The pre-built package for this SDK is automatically deployed as a Conan package in the Jfrog conan center with the name
+`outpost-sdk-nucleo-u5a5zj` and can be downloaded and consume as-is using the Conan tooling.
+
+### Using locally built SDK package
+
 The effective SDK outpost, that can be stored in a tarball or any container, is generated in the `output/staging` directory.
 This directory can be packaged using any container, including tarball, to be delivered, or through any artifact management tools.
 The SDK is standalone, except for toolchains that are not yet a part of it.
