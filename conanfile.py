@@ -2,6 +2,7 @@ import os
 from conan import ConanFile
 from conan.tools.files import copy
 from conan.tools.scm import Git
+from conan.tools.gnu import PkgConfig
 
 
 class outpostSdkRecipe(ConanFile):
@@ -40,4 +41,8 @@ class outpostSdkRecipe(ConanFile):
         copy(self, "*", local_res_folder, os.path.join(self.package_folder, "share"), keep_path=True)
 
     def package_info(self):
-        self.cpp_info.libs = ["uapi"]
+        self.cpp_info.libs = ["uapi", "shield_c_lib"]
+        pkg_config_dir = os.path.join(self.cpp.build.libdirs, "pkgconfig")
+        pkg_config = PkgConfig(conanfile, "uapi", pkg_config_path=pkg_config_dir)
+        pkg_config = PkgConfig(conanfile, "shield", pkg_config_path=pkg_config_dir)
+        pkg_config.fill_cpp_info(self.cpp_info, is_system=False, system_libs=["m", "rt"])
