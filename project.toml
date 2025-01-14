@@ -8,6 +8,7 @@ version = 'v0.1.0'
 [kernel]
 scm.git.uri = 'https://github.com/outpost-os/sentry-kernel.git'
 scm.git.revision = 'main'
+build.options.with_doc = true
 config = 'configs/sentry/sentry.config'
 
 [runtime]
